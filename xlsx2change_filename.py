@@ -1,5 +1,9 @@
-import pandas as pd
+"""
+엑셀 파일을 사용하여 폴더명에 위치한 파일의 이름을 변경합니다
+"""
+
 import os
+import pandas as pd
 
 # 동일 파일명 handling 필요
 #! L열에 파일명 대신 폴더 경로 사용하는 것으로 확정
@@ -7,6 +11,11 @@ import os
 
 
 def change_filename(excel_file_path):
+    """
+    엑셀파일을 사용하여 L열에 위치한 폴더명을 변경합니다
+    엑셀파일 헤더 : YEAR,AUDITTYPE_CDB,COMMITTEE_ID,COMMITTEE_NAME,ORG_ID,
+    ORG_NAME,PDF_NAME,HWP_NAME,PBM_NAME,BOOK_NAME,DIRECTORY_CDB,Path,FileName
+    """
     df = pd.read_excel(excel_file_path)
 
     old_names_dirname = df['Path'].tolist()  # L열 읽지 못함
@@ -31,6 +40,6 @@ def change_filename(excel_file_path):
 
 
 if __name__ == "__main__":
-    excel_file_path = input("엑셀 파일 경로를 입력하세요: ")
-    change_filename(excel_file_path)
+    excel_path = input("엑셀 파일 경로를 입력하세요: ")
+    change_filename(excel_path)
     print("작업이 완료되었습니다.")
