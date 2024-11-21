@@ -51,9 +51,9 @@ def create_excel():  # pylint: disable=R0914
         ws.cell(row=1, column=col_idx).fill = header_color
 
     before_filename = ''
+    unique_number = 1
 
     for root, _, files in os.walk(directory):
-
         for file in natsorted([os.path.splitext(f)[0] for f in files]):
             tmp1, _ = os.path.splitext(file)
             if tmp1 == before_filename:
@@ -81,11 +81,6 @@ def create_excel():  # pylint: disable=R0914
                     break
 
             base_book_name = short_cmt + '_' + org
-            match2 = re.search(r'\((\d+)\)\s*$', tmp1)
-            if match2:
-                unique_book_name = base_book_name + '_' + '0' + match2.group(1)
-            else:
-                unique_book_name = base_book_name + '_' + '0' + '1'
             file_without_ext, _ = os.path.splitext(file)
 
             ws.cell(row=max_row, column=1, value=file[:4])
@@ -95,6 +90,13 @@ def create_excel():  # pylint: disable=R0914
             ws.cell(row=max_row, column=5,
                     value=organization_dict[org] if org in organization_dict else None)
             ws.cell(row=max_row, column=6, value=org)
+
+            if ws.cell(row=max_row - 1, column=6).value == ws.cell(row=max_row, column=6).value:
+                unique_number += 1
+            else:
+                unique_number = 1
+            unique_number_str = f"{unique_number:02}"
+            unique_book_name = base_book_name + '_' + unique_number_str
             ws.cell(row=max_row, column=10, value=unique_book_name)
             ws.cell(row=max_row, column=12, value=file_without_ext)
             ws.cell(row=max_row, column=13, value=root)
